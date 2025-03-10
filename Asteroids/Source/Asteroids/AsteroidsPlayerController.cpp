@@ -42,17 +42,8 @@ void AAsteroidsPlayerController::SetupInputComponent()
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
-		// Setup mouse input events
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AAsteroidsPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &AAsteroidsPlayerController::OnSetDestinationTriggered);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Completed, this, &AAsteroidsPlayerController::OnSetDestinationReleased);
-		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Canceled, this, &AAsteroidsPlayerController::OnSetDestinationReleased);
-
-		// Setup touch input events
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Started, this, &AAsteroidsPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &AAsteroidsPlayerController::OnTouchTriggered);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &AAsteroidsPlayerController::OnTouchReleased);
-		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &AAsteroidsPlayerController::OnTouchReleased);
+		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Triggered, this, &AAsteroidsPlayerController::OnMove);
+		EnhancedInputComponent->BindAction(SetShootAction, ETriggerEvent::Triggered, this, &AAsteroidsPlayerController::OnShoot);
 	}
 	else
 	{
@@ -60,66 +51,20 @@ void AAsteroidsPlayerController::SetupInputComponent()
 	}
 }
 
-void AAsteroidsPlayerController::OnInputStarted()
+void AAsteroidsPlayerController::OnMove(const FInputActionValue& Value)
 {
-	StopMovement();
-}
+	FVector2D MovementVector = Value.Get<FVector2D>();
 
-// Triggered every frame when the input is held down
-void AAsteroidsPlayerController::OnSetDestinationTriggered()
-{
-	// We flag that the input is being pressed
-	FollowTime += GetWorld()->GetDeltaSeconds();
-	
-	// We look for the location in the world where the player has pressed the input
-	FHitResult Hit;
-	bool bHitSuccessful = false;
-	if (bIsTouch)
-	{
-		bHitSuccessful = GetHitResultUnderFinger(ETouchIndex::Touch1, ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-	else
-	{
-		bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
-	}
-
-	// If we hit a surface, cache the location
-	if (bHitSuccessful)
-	{
-		CachedDestination = Hit.Location;
-	}
-	
-	// Move towards mouse pointer or touch
 	APawn* ControlledPawn = GetPawn();
-	if (ControlledPawn != nullptr)
+	if (ControlledPawn)
 	{
-		FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
-		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
+		ControlledPawn->AddMovementInput(ControlledPawn->GetActorForwardVector(), MovementVector.Y);
+		ControlledPawn->AddMovementInput(ControlledPawn->GetActorRightVector(), MovementVector.X);
 	}
-}
-
-void AAsteroidsPlayerController::OnSetDestinationReleased()
-{
-	// If it was a short press
-	if (FollowTime <= ShortPressThreshold)
-	{
-		// We move there and spawn some particles
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
-	}
-
-	FollowTime = 0.f;
 }
 
 // Triggered every frame when the input is held down
-void AAsteroidsPlayerController::OnTouchTriggered()
+void AAsteroidsPlayerController::OnShoot()
 {
-	bIsTouch = true;
-	OnSetDestinationTriggered();
-}
-
-void AAsteroidsPlayerController::OnTouchReleased()
-{
-	bIsTouch = false;
-	OnSetDestinationReleased();
+	UE_LOG(LogTemp, Display, TEXT("SHOOT!!!"));
 }
