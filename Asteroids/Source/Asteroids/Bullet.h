@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Bullet.generated.h"
 
+class UProjectileMovementComponent;
+
 UCLASS()
 class ASTEROIDS_API ABullet : public AActor
 {
@@ -22,5 +24,12 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	UStaticMeshComponent* BaseMesh;
+
+	UPROPERTY(VisibleAnywhere, Category = "Movement")
+	UProjectileMovementComponent* ProjectileMovementComponent;
 
 };

@@ -2,12 +2,27 @@
 
 
 #include "Bullet.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 ABullet::ABullet()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+
+	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProjectileMesh"));
+	RootComponent = BaseMesh;
+
+	BaseMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	BaseMesh->SetCollisionObjectType(ECC_GameTraceChannel1);
+	BaseMesh->SetCollisionResponseToAllChannels(ECR_Block);
+	BaseMesh->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Ignore);
+
+	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement Component"));
+	ProjectileMovementComponent->MaxSpeed = 1300.f;
+	ProjectileMovementComponent->InitialSpeed = 1300.f;
+	ProjectileMovementComponent->Velocity = FVector(0.f, 0.f, 1.f);
+	ProjectileMovementComponent->ProjectileGravityScale = 0.f;
 
 }
 

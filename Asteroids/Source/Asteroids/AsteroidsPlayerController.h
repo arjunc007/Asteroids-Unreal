@@ -8,6 +8,7 @@
 #include "AsteroidsPlayerController.generated.h"
 
 /** Forward declaration to improve compiling times */
+class APlayerShip;
 class UNiagaraSystem;
 class UInputMappingContext;
 class UInputAction;
@@ -57,6 +58,7 @@ protected:
 	void OnShoot();
 
 private:
+	APlayerShip* Ship;
 	FVector CachedDestination;
 
 	bool bIsTouch; // Is it a touch device

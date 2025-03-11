@@ -5,7 +5,7 @@
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "NiagaraSystem.h"
 #include "NiagaraFunctionLibrary.h"
-#include "AsteroidsCharacter.h"
+#include "PlayerShip.h"
 #include "Engine/World.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
@@ -26,6 +26,12 @@ void AAsteroidsPlayerController::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	Ship = Cast<APlayerShip>(GetPawn());
+	if (!Ship)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No Pawn for Controller"));
+	}
 }
 
 void AAsteroidsPlayerController::SetupInputComponent()
@@ -66,5 +72,8 @@ void AAsteroidsPlayerController::OnMove(const FInputActionValue& Value)
 // Triggered every frame when the input is held down
 void AAsteroidsPlayerController::OnShoot()
 {
-	UE_LOG(LogTemp, Display, TEXT("SHOOT!!!"));
+	if (Ship)
+	{
+		Ship->Shoot();
+	}
 }
