@@ -13,6 +13,12 @@ class AAsteroidsGameMode : public AGameModeBase
 
 public:
 	AAsteroidsGameMode();
+
+protected:
+	virtual void BeginPlay() override;
+
+private:
+	void HandleGameStart();
 };
 
 

@@ -24,3 +24,15 @@ AAsteroidsGameMode::AAsteroidsGameMode()
 		PlayerControllerClass = PlayerControllerBPClass.Class;
 	}
 }
+
+void AAsteroidsGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+	HandleGameStart();
+}
+
+void AAsteroidsGameMode::HandleGameStart()
+{
+
+}

@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "Asteroid.generated.h"
 
+class USphereComponent;
+class UProjectileMovementComponent;
+
 UCLASS()
 class ASTEROIDS_API AAsteroid : public AActor
 {
@@ -22,5 +25,20 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void Initialise(FVector StartPosition, FVector Direction, float Speed, float RotSpeed);
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	UStaticMeshComponent* BaseMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	USphereComponent* SphereComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UProjectileMovementComponent* AsteroidMovement;
+
+	FVector RotationAxis;
+	float RotSpeed;
 
 };
