@@ -17,6 +17,7 @@ AAsteroid::AAsteroid()
 	BaseMesh->SetupAttachment(SphereComponent);
 
 	AsteroidMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Asteroid Movement"));
+	AsteroidMovement->ProjectileGravityScale = 0.0f;
 }
 
 // Called when the game starts or when spawned
@@ -32,7 +33,7 @@ void AAsteroid::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AddActorLocalRotation(FRotator(RotSpeed * DeltaTime, RotSpeed * DeltaTime, 0.0f));
+	AddActorLocalRotation(FQuat(RotationAxis, FMath::DegreesToRadians(RotSpeed * DeltaTime)));
 }
 
 void AAsteroid::Initialise(FVector StartPosition, FVector Direction, float Speed, float RotationSpeed)

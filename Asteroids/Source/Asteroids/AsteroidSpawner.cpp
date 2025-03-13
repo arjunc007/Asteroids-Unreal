@@ -39,12 +39,12 @@ void AAsteroidSpawner::SpawnAsteroid()
 	}
 
 	FVector SpawnPosition = FVector(
-		SpawnAreaMin.X,
-		FMath::RandRange(SpawnAreaMin.Y, SpawnAreaMax.Y),
+		FMath::RandRange(SpawnAreaMin.X, SpawnAreaMax.X),
+		SpawnAreaMin.Y,
 		100.f
 	);
 
-	FVector Direction = FVector(-1.0f, FMath::RandRange(-0.2f, 0.2f), 0.0f).GetSafeNormal();
+	FVector Direction = FVector(FMath::RandRange(-0.2f, 0.2f) , -1.0f, 0.0f).GetSafeNormal();
 
 	float Speed = FMath::RandRange(MinSpeed, MaxSpeed);
 	float RotationSpeedValue = FMath::RandRange(MinRotationSpeed, MaxRotationSpeed);
