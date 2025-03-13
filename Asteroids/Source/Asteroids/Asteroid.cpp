@@ -36,11 +36,24 @@ void AAsteroid::Tick(float DeltaTime)
 	AddActorLocalRotation(FQuat(RotationAxis, FMath::DegreesToRadians(RotSpeed * DeltaTime)));
 }
 
-void AAsteroid::Initialise(FVector StartPosition, FVector Direction, float Speed, float RotationSpeed)
+void AAsteroid::Initialise(FVector StartPosition, FVector Direction, float Speed, float Size, float RotationSpeed)
 {
 	SetActorLocation(StartPosition);
 
 	AsteroidMovement->Velocity = Direction * Speed;
 
 	RotSpeed = RotationSpeed;
+
+	SetActorScale3D(FVector::OneVector * Size);
+
+	SetRandomMesh();
+}
+
+void AAsteroid::SetRandomMesh()
+{
+	if (AvailableMeshes.Num() > 0)
+	{
+		int32 RandomIndex = FMath::RandRange(0, AvailableMeshes.Num() - 1);
+		BaseMesh->SetStaticMesh(AvailableMeshes[RandomIndex]);
+	}
 }

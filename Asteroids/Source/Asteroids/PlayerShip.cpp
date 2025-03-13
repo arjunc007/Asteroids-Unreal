@@ -46,6 +46,7 @@ void APlayerShip::Shoot()
 		LastFireTime = CurrentTime;
 		FVector Location = ProjectileSpawnPoint->GetComponentLocation();
 		FRotator Rotation = ProjectileSpawnPoint->GetComponentRotation();
-		GetWorld()->SpawnActor<ABullet>(BulletClass, Location, Rotation);
+		auto Bullet = GetWorld()->SpawnActor<ABullet>(BulletClass, Location, Rotation);
+		Bullet->SetOwner(this);
 	}
 }

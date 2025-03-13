@@ -45,6 +45,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<ABullet> BulletClass;
 
-	const float CoolDown = 0.1f;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float CoolDown = 0.1f;
 	float LastFireTime;
 };

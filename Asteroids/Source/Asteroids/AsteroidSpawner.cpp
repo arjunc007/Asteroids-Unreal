@@ -47,11 +47,12 @@ void AAsteroidSpawner::SpawnAsteroid()
 	FVector Direction = FVector(FMath::RandRange(-0.2f, 0.2f) , -1.0f, 0.0f).GetSafeNormal();
 
 	float Speed = FMath::RandRange(MinSpeed, MaxSpeed);
+	float Size = FMath::RandRange(MinSize, MaxSize);
 	float RotationSpeedValue = FMath::RandRange(MinRotationSpeed, MaxRotationSpeed);
-	UE_LOG(LogTemp, Display, TEXT("Spawning Asteroid at Location %s with Speed = %f and Direction = %s"), *SpawnPosition.ToString(), Speed, *Direction.ToString());
+	//UE_LOG(LogTemp, Display, TEXT("Spawning Asteroid at Location %s with Speed = %f and Direction = %s"), *SpawnPosition.ToString(), Speed, *Direction.ToString());
 	AAsteroid* NewAsteroid = GetWorld()->SpawnActor<AAsteroid>(AsteroidClass, SpawnPosition, FRotator::ZeroRotator);
 	if (NewAsteroid)
 	{
-		NewAsteroid->Initialise(SpawnPosition, Direction, Speed, RotationSpeedValue);
+		NewAsteroid->Initialise(SpawnPosition, Direction, Speed, Size, RotationSpeedValue);
 	}
 }

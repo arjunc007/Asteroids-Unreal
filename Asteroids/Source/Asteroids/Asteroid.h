@@ -26,11 +26,16 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void Initialise(FVector StartPosition, FVector Direction, float Speed, float RotSpeed);
+	void Initialise(FVector StartPosition, FVector Direction, float Speed, float Size, float RotSpeed);
+
+	void SetRandomMesh();
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UStaticMeshComponent* BaseMesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	TArray<UStaticMesh*> AvailableMeshes;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	USphereComponent* SphereComponent;

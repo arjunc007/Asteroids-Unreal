@@ -48,6 +48,12 @@ private:
 	float MaxSpeed = 600.f;
 
 	UPROPERTY(EditAnywhere, Category = "Spawning")
+	float MinSize = 1.5f;
+
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	float MaxSize = 5.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Spawning")
 	float MinRotationSpeed = 10.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Spawning")
